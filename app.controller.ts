@@ -6,12 +6,12 @@ import { Roles } from './role/role.decorator';
 import { UserRole } from './users/entities/user.entity';
 
 @Controller()
-@UseGuards(JwtGuard,RoleGuard)
+// @UseGuards(JwtGuard,RoleGuard)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @Roles(UserRole.PASSANGER)
+  // @Roles(UserRole.PASSANGER)
   getHello(): string {
     return this.appService.getHello();
   }

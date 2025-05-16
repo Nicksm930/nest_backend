@@ -1,4 +1,4 @@
-import { Inject, Module } from '@nestjs/common';
+import { Inject, MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -13,6 +13,8 @@ import { RidesModule } from './rides/rides.module';
 import { PassangersModule } from './passangers/passangers.module';
 import { Passanger } from './passangers/entities/passanger.entity';
 import { Ride } from './rides/entities/ride.entity';
+import { IpLoggerMiddleware } from './ip-logger/ip-logger.middleware';
+import { IploggerModule } from './iplogger/iplogger.module';
 
 @Module({
   imports: [
@@ -39,11 +41,16 @@ import { Ride } from './rides/entities/ride.entity';
     VehiclesModule,
     RidesModule,
     PassangersModule,
+    IploggerModule,
   ],
   controllers: [AppController],
   providers: [AppService,],
 })
-export class AppModule {}
+export class AppModule {
+  configure(loggerMiddleware: MiddlewareConsumer){
+    loggerMiddleware.apply(IpLoggerMiddleware).forRoutes('*')
+  }
+}
 // DB_NAME=taxi
 // DB_USERNAME=postgres
 // DB_PASSWORD=neebal
